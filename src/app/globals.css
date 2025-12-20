@@ -14,12 +14,22 @@
   --text-base: #B3B1B1;
   --text-muted: #666666;
   --text-link: #FFFFFF;
+  --text-link-hover: #EDDF5C;
 
   /* Button */
   --text-button-base: #030303;
   
   /* Accent */
+  --accent-red: #FE6A6A;
+  --accent-orange: #FFA86B;
+  --accent-yellow: #EDDF5C;
   --accent-green: #D1FE6A;
+  --accent-cyan: #6AFEF5;
+  --accent-blue: #6AB7FE;
+  --accent-indigo: #756BFF;
+  --accent-purple: #BD6AFE;
+  --accent-pink: #FE6AE6;
+
 }
 
 @theme inline {
@@ -33,8 +43,10 @@ body {
   font-family: var(--font-onest), system-ui, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-heading);
-  font-family: var(--font-unbounded), system-ui, sans-serif;
-  font-weight: 600;
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-heading);
+    font-family: var(--font-unbounded), system-ui, sans-serif;
+    font-weight: 600;
+  }
 }
