@@ -71,4 +71,13 @@ body {
     font-family: var(--font-unbounded), system-ui, sans-serif;
     font-weight: 600;
   }
+  a {
+    color: var(--text-link);
+    transition: color 0.3s;
+
+    &:hover {
+      color: var(--text-link-hover);  
+    }
+  }
+
 }

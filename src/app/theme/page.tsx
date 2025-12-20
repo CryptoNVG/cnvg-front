@@ -18,6 +18,10 @@ export default function ThemePage() {
             <h2 className="text-4xl leading-normal">Heading 2<br></br>Nunc id fringilla eros.</h2>
           </div>
           <div className="flex items-baseline gap-4">
+            <span className="text-xs text-zinc-600 min-w-[40px]">H2 URL</span>
+            <h2 className="text-4xl leading-normal"><a className="duration-600" href="#">Heading 2 link</a></h2>
+          </div>
+          <div className="flex items-baseline gap-4">
             <span className="text-xs text-zinc-600 min-w-[40px]">H3</span>
             <h3 className="text-3xl leading-normal">Heading 3<br></br>Nunc id fringilla eros.</h3>
           </div>
@@ -49,13 +53,16 @@ export default function ThemePage() {
             Aenean vitae laoreet nisi. Nunc id fringilla eros. Sed egestas mauris sit amet arcu vestibulum blandit. Curabitur gravida dui vel purus tempus malesuada. Phasellus at mi ut tellus lobortis lobortis. Aliquam nec lectus at ex laoreet posuere. Quisque interdum nisi non orci luctus dictum. This is large body text suitable for introductions and lead paragraphs.
             </p>
           </div>
-          <div className="flex items-start gap-4">
+          <div className="flex items-start flex-row gap-4">
             <span className="text-xs text-zinc-600 min-w-[40px] pt-1">Base</span>
-            <p className="text-base leading-relaxed">
-            Aenean vitae laoreet nisi. Nunc id fringilla eros. Sed egestas mauris sit amet arcu vestibulum blandit. Curabitur gravida dui vel purus tempus malesuada. Phasellus at mi ut tellus lobortis lobortis. Aliquam nec lectus at ex laoreet posuere. Quisque interdum nisi non orci luctus dictum. This is the default body text size used for most content throughout the application.
+            <p className="text-base leading-relaxed basis-1/3">
+            Aenean vitae laoreet nisi. Nunc id fringilla eros. <a href="#">Test url example</a> Sed egestas mauris <b>bold text</b> sit amet arcu vestibulum blandit. Curabitur <u>Hello</u> gravida dui vel purus tempus malesuada. Phasellus at mi ut tellus lobortis lobortis. Aliquam nec lectus at ex laoreet posuere. Quisque interdum nisi non orci luctus dictum. This is the default body text size used for most content throughout the application.
             </p>
-            <p className="text-muted leading-relaxed">
-            Aenean vitae laoreet nisi. Nunc id fringilla eros. Sed egestas mauris sit amet arcu vestibulum blandit. Curabitur gravida dui vel purus tempus malesuada. Phasellus at mi ut tellus lobortis lobortis. Aliquam nec lectus at ex laoreet posuere. Quisque interdum nisi non orci luctus dictum. This is the default body text size used for most content throughout the application.
+            <p className="text-muted leading-relaxed basis-1/3">
+            Aenean vitae laoreet nisi. Nunc id fringilla eros. <a href="#">Test url example</a> Sed egestas mauris sit amet arcu vestibulum blandit. Curabitur gravida dui vel purus tempus malesuada. Phasellus at mi ut tellus lobortis lobortis. Aliquam nec lectus at ex laoreet posuere. Quisque interdum nisi non orci luctus dictum. This is the default body text size used for most content throughout the application.
+            </p>
+            <p className="text-base leading-relaxed font-mono basis-1/3">
+            Aenean vitae laoreet nisi. Nunc id fringilla eros.
             </p>
           </div>
           <div className="flex items-start gap-4">
