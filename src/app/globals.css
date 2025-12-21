@@ -3,7 +3,6 @@
 :root {
   /* Base */
   --background: #030303;
-  --foreground: #ededed;
 
   /* Card */
   --card: #1A1A1A;
@@ -17,8 +16,17 @@
   --text-link-hover: #EDDF5C;
 
   /* Button */
-  --text-button-base: #030303;
-  
+  --button-text-dark: #030303;
+  --button-text-light: #F7F7F7;
+  --button-text-color: #D1FE6A;
+  --button-text-hover: #EDDF5C;
+
+  --button-background-color-hover: #EDDF5C;
+  --button-background-light: #f7f7f71A;
+  --button-background-light-hover: #f7f7f721;
+  --button-background-dark: #03030333;
+  --button-background-dark-hover: #0303034D;
+
   /* Accent */
   --accent-red: #FE6A6A;
   --accent-orange: #FFA86B;
@@ -47,6 +55,17 @@
   --color-card: var(--card);
   --color-card-hover: var(--card-hover);
   
+  /* Button */
+  --color-button-text-dark: var(--button-text-dark);
+  --color-button-text-light: var(--button-text-light);
+  --color-button-text-color: var(--button-text-color);
+  --color-button-text-hover: var(--button-text-hover);
+  --color-button-bg-color-hover: var(--button-background-color-hover);
+  --color-button-bg-light: var(--button-background-light);
+  --color-button-bg-light-hover: var(--button-background-light-hover);
+  --color-button-bg-dark: var(--button-background-dark);
+  --color-button-bg-dark-hover: var(--button-background-dark-hover);
+  
   /* Accent */
   --color-accent-red: var(--accent-red);
   --color-accent-orange: var(--accent-orange);
@@ -71,6 +90,12 @@ body {
     font-family: var(--font-unbounded), system-ui, sans-serif;
     font-weight: 600;
   }
+  h1 { font-size: 3rem; line-height: 1.5; }
+  h2 { font-size: 2.25rem; line-height: 1.5; }
+  h3 { font-size: 1.875rem; line-height: 1.5; }
+  h4 { font-size: 1.5rem; line-height: 1.5; }
+  h5 { font-size: 1.25rem; line-height: 1.5; }
+  h6 { font-size: 1.125rem; line-height: 1.5; }
   a {
     color: var(--text-link);
     transition: color 0.3s;
