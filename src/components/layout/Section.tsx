@@ -14,7 +14,7 @@ interface SectionProps {
 export function Section({ title, description, url, children, className = "", id = "section-content" }: SectionProps) {
   return (
     <section className={`w-full px-1 md:px-6 py-6 md:py-12 ${className}`}>
-      <div id={id} className="flex flex-col max-w-screen-xl mx-auto w-full">
+      <div id={id} className="flex flex-col max-w-7xl mx-auto w-full">
         {title && (
           <div id="section-title" className="flex flex-col gap-2 px-4 md:px-6 pb-6">
             <h2 className="tracking-wider max-w-2/3">
@@ -24,7 +24,7 @@ export function Section({ title, description, url, children, className = "", id 
                   <CaretRight 
                     size={24} 
                     weight="bold" 
-                    className="text-[var(--text-muted)] group-hover:text-[var(--button-text-hover)] transition-colors"
+                    className="text-muted group-hover:text-button-text-hover transition-colors"
                   />
                 </a>
               ) : title}
