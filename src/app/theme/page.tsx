@@ -4,7 +4,7 @@ import { Section } from "@/components/layout/Section";
 export default function ThemePage() {
   return (
     <main className="min-h-screen">
-      <Section title="Blocks" description="Some text" id="customid" >
+      <Section title="Blocks" description="Some text" url="https://example.com" id="customid" >
         <div className="bg-card w-full h-96 rounded-3xl"></div>
       </Section>
      
