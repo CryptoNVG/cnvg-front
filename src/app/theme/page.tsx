@@ -2,10 +2,81 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/layout/Section";
 import { CardSimple } from "@/components/ui/CardSimple";
 import { Icon } from "@/components/ui/Icon";
+import { Breadcrumbs, MOCK_BREADCRUMBS } from "@/components/ui/Breadcrumbs";
 
 export default function ThemePage() {
   return (
     <main className="min-h-screen">
+
+      {/* Section: Breadcrumbs */}
+
+      <Section title="Breadcrumbs" description="Navigation breadcrumbs for page hierarchy. Horizontal scroll on overflow, no visible scrollbar.">
+        <div className="px-4 md:px-6">
+          {/* Exchange Profile Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Exchange Profile</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.exchangeProfile} />
+            </div>
+          </div>
+
+          {/* ATM Profile Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">ATM Profile</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.atmProfile} />
+            </div>
+          </div>
+
+          {/* Online Exchange Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Online Exchange</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.onlineExchange} />
+            </div>
+          </div>
+
+          {/* Blog Article Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Blog Article</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.blogArticle} />
+            </div>
+          </div>
+
+          {/* Event Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Event</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.event} />
+            </div>
+          </div>
+
+          {/* Ads Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Ads / Service</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.ads} />
+            </div>
+          </div>
+
+          {/* FAQ Article Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Support / FAQ / Article</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.faqArticle} />
+            </div>
+          </div>
+
+          {/* Contact Form Path */}
+          <div className="mb-8">
+            <h3 className="text-xs text-zinc-600 mb-2">Support / Contact Form</h3>
+            <div className="rounded-2xl border-[1px] border-zinc-900">
+              <Breadcrumbs items={MOCK_BREADCRUMBS.contactForm} />
+            </div>
+          </div>
+        </div>
+      </Section>
 
       {/* Section: Cards */}
 
@@ -262,7 +333,7 @@ export default function ThemePage() {
                 <span className="text-xs text-muted">Fill, Gradient</span>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Icon name="arrow-circle-right" variant="ui" />
+                <Icon name="arrow-circle-right" variant="ui16" />
                 <span className="text-xs text-zinc-600">UI (16x16)</span>
                 <span className="text-xs text-muted">Bold, Solid</span>
               </div>
@@ -405,27 +476,27 @@ export default function ThemePage() {
             <h3 className="text-xs text-zinc-600 mb-4">Different Icons - UI Variant</h3>
             <div className="flex items-center gap-6 flex-wrap">
               <div className="flex flex-col items-center gap-2">
-                <Icon name="arrow-circle-right" variant="ui" />
+                <Icon name="arrow-circle-right" variant="ui16" />
                 <span className="text-xs text-muted">arrow-circle-right</span>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Icon name="house" variant="ui" />
+                <Icon name="house" variant="ui16" />
                 <span className="text-xs text-muted">house</span>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Icon name="star" variant="ui" />
+                <Icon name="star" variant="ui16" />
                 <span className="text-xs text-muted">star</span>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Icon name="gear" variant="ui" />
+                <Icon name="gear" variant="ui16" />
                 <span className="text-xs text-muted">gear</span>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Icon name="heart" variant="ui" />
+                <Icon name="heart" variant="ui16" />
                 <span className="text-xs text-muted">heart</span>
               </div>
               <div className="flex flex-col items-center gap-2">
-                <Icon name="user" variant="ui" />
+                <Icon name="user" variant="ui16" />
                 <span className="text-xs text-muted">user</span>
               </div>
             </div>
@@ -449,7 +520,7 @@ export default function ThemePage() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Icon name="arrow-circle-right" variant="ui" />
+                <Icon name="arrow-circle-right" variant="ui16" />
                 <span className="text-base">UI icon inline with text</span>
               </div>
             </div>

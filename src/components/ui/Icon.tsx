@@ -3,16 +3,17 @@
 /**
  * Icon component using Phosphor Icons
  *
- * Supports three variants:
+ * Supports four variants:
  * - big: 40x40, light weight, gradient (85deg from --accent-green to --accent-pink)
  * - small: 24x24, fill weight, gradient (85deg from --accent-green to --accent-pink)
- * - ui: 16x16, bold weight, solid color (--text-muted)
+ * - ui16: 16x16, bold weight, solid color (--text-muted)
+ * - ui12: 12x12, bold weight, solid color (--text-muted)
  */
 
 import * as PhosphorIcons from "@phosphor-icons/react";
 import { createElement, useRef, useEffect, useState, useMemo } from "react";
 
-type IconVariant = "big" | "small" | "ui";
+type IconVariant = "big" | "small" | "ui16" | "ui12";
 
 interface VariantConfig {
   size: number;
@@ -41,8 +42,14 @@ const VARIANT_CONFIG: Record<IconVariant, VariantConfig> = {
     weight: "fill",
     gradient: true,
   },
-  ui: {
+  ui16: {
     size: 16,
+    weight: "bold",
+    gradient: false,
+    color: "var(--text-muted)",
+  },
+  ui12: {
+    size: 12,
     weight: "bold",
     gradient: false,
     color: "var(--text-muted)",
@@ -88,7 +95,7 @@ function createMaskUrl(svg: SVGElement, size: number): string {
 
 export function Icon({
   name,
-  variant = "ui",
+  variant = "ui16",
   className = "",
   gradientAngle,
   gradientColor1,
