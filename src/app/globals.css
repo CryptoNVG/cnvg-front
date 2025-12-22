@@ -7,6 +7,7 @@
   /* Card */
   --card: #1A1A1A;
   --card-hover: #272727;
+  --card-top-border: #ffffff0d;
 
   /* Text */
   --text-heading: #F7F7F7;
@@ -38,6 +39,11 @@
   --accent-purple: #BD6AFE;
   --accent-pink: #FE6AE6;
 
+  /* Icon 40 */
+  --icon-40-gradient-angle: 85deg;
+  --icon-40-gradient-color-1: var(--accent-green);
+  --icon-40-gradient-color-2: var(--accent-pink);
+
 }
 
 @theme inline {
@@ -54,6 +60,7 @@
   /* Card */
   --color-card: var(--card);
   --color-card-hover: var(--card-hover);
+  --color-card-top-border: var(--card-top-border);
   
   /* Button */
   --color-button-text-dark: var(--button-text-dark);

@@ -1,12 +1,17 @@
 "use client";
 
 import { ReactNode } from "react";
+import { Icon } from "./Icon";
 
 interface CardSimpleProps {
   title?: string;
   description?: string;
   children?: ReactNode;
   className?: string;
+  iconName?: string;
+  iconGradientAngle?: number;
+  iconGradientColor1?: string;
+  iconGradientColor2?: string;
 }
 
 export function CardSimple({
@@ -14,12 +19,30 @@ export function CardSimple({
   description,
   children,
   className = "",
+  iconName,
+  iconGradientAngle,
+  iconGradientColor1,
+  iconGradientColor2,
 }: CardSimpleProps) {
   return (
-    <div className={`bg-card rounded-2xl md:rounded-3xl py-0 md:py-2 ${className}`}>
+    <div 
+      className={`bg-card rounded-2xl md:rounded-3xl py-0 md:py-2 border-t ${className}`}
+      style={{ borderColor: 'var(--color-card-top-border)' }}
+    >
       {/* Header */}
-      {(title || description) && (
+      {(title || description || iconName) && (
         <div className="flex flex-col gap-1 px-4 pt-4 md:px-6">
+          {iconName && (
+            <div className="mb-2">
+              <Icon 
+                name={iconName} 
+                variant="big"
+                gradientAngle={iconGradientAngle}
+                gradientColor1={iconGradientColor1}
+                gradientColor2={iconGradientColor2}
+              />
+            </div>
+          )}
           {title && <h3>{title}</h3>}
           {description && (
             <p className="text-muted text-sm">{description}</p>
