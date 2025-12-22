@@ -1,11 +1,64 @@
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/layout/Section";
+import { CardSimple } from "@/components/ui/CardSimple";
 
 export default function ThemePage() {
   return (
     <main className="min-h-screen">
-      <Section title="Blocks" description="Some text" url="https://example.com" id="customid" >
-        <div className="bg-card w-full h-96 rounded-3xl"></div>
+      <Section title="Cards" description="Some text" url="https://example.com" id="customid" >
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2 pb-4">
+        <CardSimple title="Card 1" description="This is a card with a title, description, and a footer content." >
+          <p>First paragraph</p>
+          <p>Second paragraph</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+          </ul> 
+        </CardSimple>
+        <CardSimple title="Card 2" description="This is a card with a title, description." >
+          <p>First paragraph</p>
+          <p>Second paragraph</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+          </ul> 
+        </CardSimple>
+        <CardSimple >
+          <p>First paragraph</p>
+          <p>Second paragraph</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+          </ul> 
+        </CardSimple>
+      </div>
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2">
+        <CardSimple title="Listing a crypto exchange" description="This is a card with a title, description, and a footer content." >
+          <p>First paragraph</p>
+          <p>Second paragraph</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+          </ul> 
+        </CardSimple>
+        <CardSimple title="Exchange promotion" description="This is a card with a title, description." >
+          <p>First paragraph</p>
+          <p>Second paragraph</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+          </ul> 
+        </CardSimple>
+        <CardSimple >
+          <p>First paragraph</p>
+          <p>Second paragraph</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+          </ul> 
+        </CardSimple>
+      </div>
+        
       </Section>
      
       {/* Typography */}
