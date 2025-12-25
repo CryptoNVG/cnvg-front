@@ -203,6 +203,20 @@ export default function ThemePage() {
           url="/locations/kutaisi"
         />
       </div>
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2 mt-4">
+        <CardLink
+          title="Tbilisi"
+          url="/locations/tbilisi"
+        />
+        <CardLink
+          title="Batumi"
+          url="/locations/batumi"
+        />
+        <CardLink
+          title="Kutaisi"
+          url="/locations/kutaisi"
+        />
+      </div>
       </Section>
      
       {/* Section: Typography */}

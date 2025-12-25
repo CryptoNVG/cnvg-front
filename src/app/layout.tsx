@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Onest, Unbounded } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/navigation";
 
 const onest = Onest({
   variable: "--font-onest",
@@ -27,7 +28,10 @@ export default function RootLayout({
       <body
         className={`${onest.variable} ${unbounded.variable} antialiased`}
       >
-        {children}
+        <Header />
+        <div className="pt-[72px]">
+          {children}
+        </div>
       </body>
     </html>
   );

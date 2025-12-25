@@ -11,7 +11,7 @@
  */
 
 import * as PhosphorIcons from "@phosphor-icons/react";
-import { createElement, useMemo, useId } from "react";
+import { createElement, useMemo } from "react";
 
 type IconVariant = "big" | "small" | "ui16" | "ui12";
 
@@ -84,6 +84,26 @@ function getIconComponent(iconName: string): PhosphorIconComponent | null {
   return component;
 }
 
+// Generate stable ID for gradient based on icon parameters
+function generateGradientId(
+  name: string,
+  variant: string,
+  gradientAngle?: number,
+  gradientColor1?: string,
+  gradientColor2?: string
+): string {
+  const parts = [
+    name,
+    variant,
+    gradientAngle?.toString() || "",
+    gradientColor1 || "",
+    gradientColor2 || "",
+  ];
+  // Create a simple hash from the parts
+  const hash = parts.join("-").replace(/[^a-zA-Z0-9-]/g, "");
+  return `icon-gradient-${hash}`;
+}
+
 // Convert angle to SVG gradient coordinates
 function angleToCoords(angle: number): { x1: string; y1: string; x2: string; y2: string } {
   // Normalize angle to 0-360
@@ -112,13 +132,21 @@ export function Icon({
   gradientColor1,
   gradientColor2,
 }: IconProps) {
-  const config = VARIANT_CONFIG[variant];
-  const gradientId = useId();
+  // Ensure variant is valid, fallback to "ui16"
+  const validVariant = variant && VARIANT_CONFIG[variant] ? variant : "ui16";
+  const config = VARIANT_CONFIG[validVariant];
   
   // Use CSS variables for big variant if not explicitly provided
   const finalGradientAngle = gradientAngle ?? 85;
-  const finalGradientColor1 = gradientColor1 ?? (variant === "big" ? "var(--icon-40-gradient-color-1)" : "var(--accent-green)");
-  const finalGradientColor2 = gradientColor2 ?? (variant === "big" ? "var(--icon-40-gradient-color-2)" : "var(--accent-pink)");
+  const finalGradientColor1 = gradientColor1 ?? (validVariant === "big" ? "var(--icon-40-gradient-color-1)" : "var(--accent-green)");
+  const finalGradientColor2 = gradientColor2 ?? (validVariant === "big" ? "var(--icon-40-gradient-color-2)" : "var(--accent-pink)");
+  
+  // Generate stable gradient ID based on icon parameters
+  const gradientId = useMemo(
+    () => generateGradientId(name, validVariant, finalGradientAngle, finalGradientColor1, finalGradientColor2),
+    [name, validVariant, finalGradientAngle, finalGradientColor1, finalGradientColor2]
+  );
+  
   const IconComponent = useMemo(() => getIconComponent(name), [name]);
 
   if (!IconComponent) {

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Icon } from "./Icon";
 
 interface CardLinkProps {
-  iconName: string;
+  iconName?: string;
   iconGradientAngle?: number;
   iconGradientColor1?: string;
   iconGradientColor2?: string;
@@ -31,13 +31,15 @@ export function CardLink({
       style={{ borderColor: 'var(--color-card-top-border)' }}
     >
       {/* Big Icon */}
-      <Icon 
-        name={iconName} 
-        variant="big"
-        gradientAngle={iconGradientAngle}
-        gradientColor1={iconGradientColor1}
-        gradientColor2={iconGradientColor2}
-      />
+      {iconName && (
+        <Icon 
+          name={iconName} 
+          variant="big"
+          gradientAngle={iconGradientAngle}
+          gradientColor1={iconGradientColor1}
+          gradientColor2={iconGradientColor2}
+        />
+      )}
 
       {/* Title and Description */}
       <div className="flex flex-col gap-1 flex-1">
