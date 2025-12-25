@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/layout/Section";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { CardSimple } from "@/components/ui/CardSimple";
+import { CardLink } from "@/components/ui/CardLink";
 import { Icon } from "@/components/ui/Icon";
 import { SectionBreadcrumbs, MOCK_BREADCRUMBS } from "@/components/layout/SectionBreadcrumbs";
 
@@ -13,10 +14,10 @@ export default function ThemePage() {
         breadcrumbs={MOCK_BREADCRUMBS.simpleData}
         title="Theme Components"
         description="This page showcases all the UI components and design tokens available in the design system."
-        buttonLabel="Add New"
+        buttonLabel="Download"
         buttonUrl="/exchange/add"
-        buttonColor="pink"
-        buttonIcon="Bell"
+        buttonColor="blue"
+        buttonIcon="AppStoreLogo"
       />
 
       {/* Section: Breadcrumbs */}
@@ -152,6 +153,55 @@ export default function ThemePage() {
             <li>List item 2</li>
           </ul> 
         </CardSimple>
+      </div>
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 mt-4">
+        <CardLink
+          iconName="lightning"
+          iconGradientAngle={85}
+          iconGradientColor1="var(--accent-green)"
+          iconGradientColor2="var(--accent-pink)"
+          title="Exchange Promotion"
+          description="Get special rates and bonuses for new users"
+          url="/exchange/promotion"
+        />
+        <CardLink
+          iconName="cloud-arrow-down"
+          iconGradientAngle={120}
+          iconGradientColor1="var(--accent-cyan)"
+          iconGradientColor2="var(--accent-blue)"
+          title="Download Mobile App"
+          description="Access your account on the go with our mobile application"
+          url="/download"
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2 mt-4">
+        <CardLink
+          iconName="map-pin"
+          iconGradientAngle={45}
+          iconGradientColor1="var(--accent-green)"
+          iconGradientColor2="var(--accent-pink)"
+          title="Tbilisi"
+          description="Capital city of Georgia, known for its diverse architecture and vibrant culture"
+          url="/locations/tbilisi"
+        />
+        <CardLink
+          iconName="map-pin"
+          iconGradientAngle={45}
+          iconGradientColor1="var(--accent-green)"
+          iconGradientColor2="var(--accent-pink)"
+          title="Batumi"
+          description="Coastal city on the Black Sea, famous for its modern architecture and seaside promenade"
+          url="/locations/batumi"
+        />
+        <CardLink
+          iconName="map-pin"
+          iconGradientAngle={45}
+          iconGradientColor1="var(--accent-green)"
+          iconGradientColor2="var(--accent-pink)"
+          title="Kutaisi"
+          description="Historic city in western Georgia, home to ancient monasteries and cultural heritage sites"
+          url="/locations/kutaisi"
+        />
       </div>
       </Section>
      

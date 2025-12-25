@@ -34,14 +34,14 @@ const sizeStyles: Record<Size, { height: string; padding: string; fontSize: stri
     padding: "px-6 py-1",
     fontSize: "text-sm",
     borderRadius: "rounded-2xl",
-    iconSize: 18,
+    iconSize: 20,
   },
   big: {
     height: "h-[54px]",
     padding: "px-6 py-1",
     fontSize: "text-sm",
     borderRadius: "rounded-2xl",
-    iconSize: 18,
+    iconSize: 20,
   },
 };
 
@@ -57,11 +57,11 @@ const variantStyles: Record<Variant, { base: string; hover: string }> = {
     hover: "hover:bg-button-bg-color-hover",
   },
   card: {
-    base: "text-button-text-light bg-card",
+    base: "text-button-text-light bg-card border-t",
     hover: "hover:text-button-text-hover hover:bg-card-hover",
   },
   cardAccent: {
-    base: "text-button-text-color bg-card",
+    base: "text-button-text-color bg-card border-t",
     hover: "hover:text-button-text-hover hover:bg-card-hover",
   },
   secondary: {
@@ -114,10 +114,7 @@ export function Button({
   
   // Icon sizes based on type and size
   const getIconSize = () => {
-    if (type === "leftIcon" || type === "rightIcon") {
-      return size === "small" ? 14 : 20;
-    }
-    return sizeConfig.iconSize; // icon-only uses size-based
+    return sizeConfig.iconSize; // All icon types use the same size for consistency
   };
   const icon = iconName ? getIcon(iconName, getIconSize()) : null;
 
@@ -134,7 +131,10 @@ export function Button({
     variantConfig.hover,
   ];
 
-  const fontStyle = { fontFamily: "var(--font-unbounded), system-ui, sans-serif" };
+  const fontStyle = { 
+    fontFamily: "var(--font-unbounded), system-ui, sans-serif",
+    ...((variant === "card" || variant === "cardAccent") && { borderColor: 'var(--color-card-top-border)' })
+  };
 
   // Size-specific classes
   if (type === "icon") {

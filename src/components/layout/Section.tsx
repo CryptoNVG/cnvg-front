@@ -1,6 +1,6 @@
 "use client";
 
-import { CaretRight } from "@phosphor-icons/react";
+import { Icon } from "@/components/ui/Icon";
 
 interface SectionProps {
   title?: string;
@@ -21,10 +21,10 @@ export function Section({ title, description, url, children, className = "", id 
               {url ? (
                 <a href={url} className="group inline-flex items-center gap-1 transition-all duration-600 font-bold">
                   {title}
-                  <CaretRight 
-                    size={16} 
-                    weight="bold" 
-                    className="text-muted translate-y-1 group-hover:text-button-text-hover group-hover:translate-x-[4px] transition-all duration-600"
+                  <Icon 
+                    name="caret-right"
+                    variant="ui16"
+                    className="text-muted translate-y-1 group-hover:text-link-hover group-hover:translate-x-[4px] transition-all duration-600"
                   />
                 </a>
               ) : title}

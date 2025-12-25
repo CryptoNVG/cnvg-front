@@ -11,7 +11,7 @@
  */
 
 import * as PhosphorIcons from "@phosphor-icons/react";
-import { createElement, useRef, useEffect, useState, useMemo } from "react";
+import { createElement, useMemo, useId } from "react";
 
 type IconVariant = "big" | "small" | "ui16" | "ui12";
 
@@ -46,13 +46,11 @@ const VARIANT_CONFIG: Record<IconVariant, VariantConfig> = {
     size: 16,
     weight: "bold",
     gradient: false,
-    color: "var(--text-muted)",
   },
   ui12: {
     size: 12,
     weight: "bold",
     gradient: false,
-    color: "var(--text-muted)",
   },
 };
 
@@ -70,27 +68,40 @@ type PhosphorIconComponent = React.ComponentType<{
   color?: string;
 }>;
 
+// Cache for icon components
+const iconComponentCache = new Map<string, PhosphorIconComponent | null>();
+
 function getIconComponent(iconName: string): PhosphorIconComponent | null {
+  if (iconComponentCache.has(iconName)) {
+    return iconComponentCache.get(iconName)!;
+  }
+  
   const pascalName = toPascalCase(iconName);
   const icons = PhosphorIcons as unknown as Record<string, PhosphorIconComponent>;
-  return icons[pascalName] ?? icons[iconName] ?? null;
+  const component = icons[pascalName] ?? icons[iconName] ?? null;
+  
+  iconComponentCache.set(iconName, component);
+  return component;
 }
 
-function createMaskUrl(svg: SVGElement, size: number): string {
-  const clonedSvg = svg.cloneNode(true) as SVGElement;
-  clonedSvg.setAttribute("width", String(size));
-  clonedSvg.setAttribute("height", String(size));
-
-  // Set all shapes to white for mask
-  const shapes = clonedSvg.querySelectorAll("path, circle, rect, polygon, polyline, ellipse, line");
-  shapes.forEach((shape) => {
-    shape.setAttribute("fill", "white");
-    shape.removeAttribute("stroke");
-  });
-
-  const svgString = new XMLSerializer().serializeToString(clonedSvg);
-  const encodedSvg = encodeURIComponent(svgString);
-  return `url("data:image/svg+xml;charset=utf-8,${encodedSvg}")`;
+// Convert angle to SVG gradient coordinates
+function angleToCoords(angle: number): { x1: string; y1: string; x2: string; y2: string } {
+  // Normalize angle to 0-360
+  const normalizedAngle = ((angle % 360) + 360) % 360;
+  const radians = (normalizedAngle * Math.PI) / 180;
+  
+  // Calculate gradient line endpoints
+  const x1 = Math.round(50 - Math.cos(radians) * 50);
+  const y1 = Math.round(50 + Math.sin(radians) * 50);
+  const x2 = Math.round(50 + Math.cos(radians) * 50);
+  const y2 = Math.round(50 - Math.sin(radians) * 50);
+  
+  return {
+    x1: `${x1}%`,
+    y1: `${y1}%`,
+    x2: `${x2}%`,
+    y2: `${y2}%`,
+  };
 }
 
 export function Icon({
@@ -102,48 +113,13 @@ export function Icon({
   gradientColor2,
 }: IconProps) {
   const config = VARIANT_CONFIG[variant];
+  const gradientId = useId();
   
   // Use CSS variables for big variant if not explicitly provided
-  const finalGradientAngle = gradientAngle ?? (variant === "big" ? 85 : 85);
+  const finalGradientAngle = gradientAngle ?? 85;
   const finalGradientColor1 = gradientColor1 ?? (variant === "big" ? "var(--icon-40-gradient-color-1)" : "var(--accent-green)");
   const finalGradientColor2 = gradientColor2 ?? (variant === "big" ? "var(--icon-40-gradient-color-2)" : "var(--accent-pink)");
   const IconComponent = useMemo(() => getIconComponent(name), [name]);
-  const iconRef = useRef<HTMLDivElement>(null);
-  const [maskUrl, setMaskUrl] = useState<string>("");
-
-  useEffect(() => {
-    if (!config.gradient || !iconRef.current || !IconComponent) {
-      return;
-    }
-
-    // Check if SVG is already rendered
-    const existingSvg = iconRef.current.querySelector("svg");
-    if (existingSvg) {
-      setMaskUrl(createMaskUrl(existingSvg, config.size));
-      return;
-    }
-
-    // Use MutationObserver to detect when SVG is added
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        if (mutation.type === "childList") {
-          const svg = iconRef.current?.querySelector("svg");
-          if (svg) {
-            setMaskUrl(createMaskUrl(svg, config.size));
-            observer.disconnect();
-            return;
-          }
-        }
-      }
-    });
-
-    observer.observe(iconRef.current, {
-      childList: true,
-      subtree: true,
-    });
-
-    return () => observer.disconnect();
-  }, [config.gradient, config.size, config.weight, name, IconComponent]);
 
   if (!IconComponent) {
     if (process.env.NODE_ENV === "development") {
@@ -152,8 +128,10 @@ export function Icon({
     return null;
   }
 
-  // For gradient variants, render icon and use it as a mask for the gradient
+  // For gradient variants, use inline SVG gradient
   if (config.gradient) {
+    const coords = angleToCoords(finalGradientAngle);
+    
     return (
       <div
         className={`inline-flex items-center justify-center relative ${className}`}
@@ -162,46 +140,30 @@ export function Icon({
           height: config.size,
         }}
       >
-        {/* Hidden icon for extracting SVG */}
-        <div
-          ref={iconRef}
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            opacity: 0,
-            pointerEvents: "none",
-            width: config.size,
-            height: config.size,
-          }}
-        >
-          {createElement(IconComponent, { size: config.size, weight: config.weight, color: "white" })}
+        {/* Hidden SVG with gradient definition */}
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <linearGradient id={gradientId} x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2}>
+              <stop offset="0%" stopColor={finalGradientColor1} />
+              <stop offset="100%" stopColor={finalGradientColor2} />
+            </linearGradient>
+          </defs>
+        </svg>
+        
+        {/* Icon with gradient fill */}
+        <div style={{ color: `url(#${gradientId})` }}>
+          {createElement(IconComponent, { size: config.size, weight: config.weight, color: `url(#${gradientId})` })}
         </div>
-
-        {/* Gradient background with mask */}
-        {maskUrl && (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(${finalGradientAngle}deg, ${finalGradientColor1}, ${finalGradientColor2})`,
-              maskImage: maskUrl,
-              WebkitMaskImage: maskUrl,
-              maskSize: "contain",
-              WebkitMaskSize: "contain",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-              maskPosition: "center",
-              WebkitMaskPosition: "center",
-            }}
-          />
-        )}
       </div>
     );
   }
 
   // For non-gradient variants, render directly with color
+  // Use text-muted as default color if no color class is provided in className
+  const defaultColorClass = className.includes("text-") ? "" : "text-muted";
   return (
-    <div className={className}>
-      {createElement(IconComponent, { size: config.size, weight: config.weight, color: config.color })}
+    <div className={`${defaultColorClass} ${className}`}>
+      {createElement(IconComponent, { size: config.size, weight: config.weight, color: "currentColor" })}
     </div>
   );
 }
