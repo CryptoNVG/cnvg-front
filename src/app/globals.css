@@ -16,6 +16,23 @@
   --text-link: #FFFFFF;
   --text-link-hover: #EDDF5C;
 
+ /*Form*/
+ --input-bg: #333333;
+ --input-border: #333333;
+ --input-text: #B3B1B1;
+ --input-placeholder: #B3B1B180;
+
+ --input-focus-bg: #333333; 
+ --input-focus-border: #666666;
+ --input-focus-text: #F7F7F7;
+ --input-focus-placeholder: #B3B1B180;
+
+ /*Checkbox*/
+ --checkbox-bg: #333333;
+ --checkbox-border: #333333;
+ --checkbox-checked-bg: #D1FE6A;
+ --checkbox-checked-border: #D1FE6A;
+
   /* Button */
   --button-text-dark: #030303;
   --button-text-light: #F7F7F7;
@@ -83,6 +100,26 @@
   --color-accent-indigo: var(--accent-indigo);
   --color-accent-purple: var(--accent-purple);
   --color-accent-pink: var(--accent-pink);
+  
+  /* Form */
+  --color-input-bg: var(--input-bg);
+  --color-input-border: var(--input-border);
+  --color-input-text: var(--input-text);
+  --color-input-placeholder: var(--input-placeholder);
+  --color-input-focus-bg: var(--input-focus-bg);
+  --color-input-focus-border: var(--input-focus-border);
+  --color-input-focus-text: var(--input-focus-text);
+  --color-input-focus-placeholder: var(--input-focus-placeholder);
+
+  --color-checkbox-bg: var(--input-bg);
+  --color-checkbox-border: var(--input-border);
+  --color-checkbox-checked-bg: var(--accent-green);
+  --color-checkbox-checked-border: var(--accent-green);
+  --color-checkbox-checked-text: var(--text-heading);
+  --color-checkbox-checked-placeholder: var(--input-placeholder);
+  --color-checkbox-checked-focus-bg: var(--input-focus-bg);
+  --color-checkbox-checked-focus-border: var(--input-focus-border);
+  --color-checkbox-checked-focus-text: var(--input-focus-text);
 }
 
 body {
@@ -110,6 +147,57 @@ body {
     &:hover {
       color: var(--text-link-hover);  
     }
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--input-placeholder);
+  }
+  
+  input:focus::placeholder,
+  textarea:focus::placeholder {
+    color: var(--input-focus-placeholder);
+  }
+  
+  /* Hide native calendar icon for date inputs */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+  
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+  
+  input[type="date"]::-moz-calendar-picker-indicator,
+  input[type="datetime-local"]::-moz-calendar-picker-indicator,
+  input[type="time"]::-moz-calendar-picker-indicator {
+    display: none;
+  }
+  
+  /* Hide native select arrow */
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  select::-ms-expand {
+    display: none;
+  }
+  
+  /* Hover effect for input icons */
+  .group [class*="text-muted"] {
+    transition: color 600ms ease;
+  }
+  
+  .group:hover [class*="text-muted"] {
+    color: var(--button-background-color-hover) !important;
   }
 
 }
