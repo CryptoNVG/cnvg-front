@@ -17,7 +17,7 @@ export function Section({ title, description, url, children, className = "", id 
       <div id={id} className="flex flex-col max-w-7xl mx-auto w-full">
         {title && (
           <div id="section-title" className="flex flex-col gap-2 px-4 md:px-6 pb-6">
-            <h2 className="tracking-wider max-w-2/3">
+            <h2 className="max-w-2/3">
               {url ? (
                 <a href={url} className="group inline-flex items-center gap-1 transition-all duration-600 font-bold">
                   {title}

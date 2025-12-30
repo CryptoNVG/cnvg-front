@@ -18,7 +18,7 @@ export default function ThemePage() {
       <Section title="Theme Sections" description="Navigate to different sections of the theme documentation.">
         <div className="grid grid-cols-1 gap-1 md:grid-cols-1 md:gap-1 lg:grid-cols-2">
           <CardLink
-            iconName="squares-four"
+            iconName="Cards"
             iconGradientAngle={85}
             iconGradientColor1="var(--accent-green)"
             iconGradientColor2="var(--accent-pink)"
@@ -54,7 +54,7 @@ export default function ThemePage() {
             url="/theme/forms"
           />
           <CardLink
-            iconName="flag"
+            iconName="RowsPlusBottom"
             iconGradientAngle={90}
             iconGradientColor1="var(--accent-red)"
             iconGradientColor2="var(--accent-orange)"
@@ -70,6 +70,15 @@ export default function ThemePage() {
             title="Breadcrumbs"
             description="Navigation breadcrumbs for page hierarchy"
             url="/theme/breadcrumbs"
+          />
+          <CardLink
+            iconName="Rows"
+            iconGradientAngle={200}
+            iconGradientColor1="var(--accent-purple)"
+            iconGradientColor2="var(--accent-cyan)"
+            title="Section Headers"
+            description="Various section header styles and configurations"
+            url="/theme/section-headers"
           />
         </div>
       </Section>

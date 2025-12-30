@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { Icon } from "./Icon";
 
+/**
+ * CardLink - компонент карточки-ссылки с иконкой, заголовком и описанием.
+ * При наведении меняет фон и цвет заголовка, но описание остается неизменным.
+ */
 interface CardLinkProps {
   iconName?: string;
   iconGradientAngle?: number;
@@ -45,7 +49,7 @@ export function CardLink({
       <div className="flex flex-col gap-1 flex-1">
         <h3 className="group-hover:text-link-hover transition-colors duration-600">{title}</h3>
         {description && (
-          <p className="text-muted text-sm">{description}</p>
+          <p className="text-sm text-(--color-muted)! group-hover:text-(--color-muted)!">{description}</p>
         )}
       </div>
 
