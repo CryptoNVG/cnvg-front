@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useId, useState, useMemo } from "react";
 import { Icon } from "./Icon";
 
 interface SelectOption {
@@ -28,6 +28,13 @@ export function Select({
 }: SelectProps) {
   const generatedId = useId();
   const selectId = id || generatedId;
+  const [isFocused, setIsFocused] = useState(false);
+  
+  const selectStyles = useMemo(() => ({
+    backgroundColor: isFocused ? 'var(--input-focus-bg)' : 'var(--input-bg)',
+    borderColor: error ? 'var(--accent-red)' : (isFocused ? 'var(--input-focus-border)' : 'var(--input-border)'),
+    color: isFocused ? 'var(--input-focus-text)' : 'var(--input-text)',
+  }), [isFocused, error]);
   
   return (
     <div className="flex flex-col gap-2">
@@ -39,11 +46,7 @@ export function Select({
       <div className="relative">
         <select
           id={selectId}
-          style={{
-            backgroundColor: 'var(--input-bg)',
-            borderColor: error ? 'var(--accent-red)' : 'var(--input-border)',
-            color: 'var(--input-text)',
-          }}
+          style={selectStyles}
           className={`
             w-full pl-4 pr-10 py-3
             rounded-2xl border
@@ -56,16 +59,8 @@ export function Select({
             ${error ? "focus:border-accent-red" : "focus:border-[var(--input-focus-border)]"}
             ${className}
           `.trim()}
-          onFocus={(e) => {
-            e.target.style.backgroundColor = 'var(--input-focus-bg)';
-            e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--input-focus-border)';
-            e.target.style.color = 'var(--input-focus-text)';
-          }}
-          onBlur={(e) => {
-            e.target.style.backgroundColor = 'var(--input-bg)';
-            e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--input-border)';
-            e.target.style.color = 'var(--input-text)';
-          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           {...props}
         >
           {placeholder && (

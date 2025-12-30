@@ -22,13 +22,13 @@ function MobileAccordionItem({
   onClose: () => void;
 }) {
   return (
-    <div className="border-b border-card-top-border">
+    <div>
       <button
         onClick={onToggle}
-        className="flex items-center justify-between w-full px-6 py-4 text-left"
+        className="flex items-center gap-2 w-full px-6 py-4 text-left"
       >
         <span 
-          className="text-xl font-medium text-heading"
+          className={`text-xl font-medium ${isExpanded ? "text-heading" : "text-base"}`}
           style={{ fontFamily: "var(--font-unbounded), system-ui, sans-serif" }}
         >
           {section.label}
@@ -145,7 +145,7 @@ export function HeaderMobile() {
 
           {/* Scrollable content */}
           <div 
-            className="h-[calc(100vh-72px)] overflow-y-auto transition-transform duration-300 translate-y-0"
+            className="h-[calc(100vh-72px)] overflow-y-auto transition-transform duration-300 translate-y-0 pb-[90px]"
             style={{
               backgroundColor: "var(--background)",
             }}

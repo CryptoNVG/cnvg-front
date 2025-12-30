@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId, useRef, useLayoutEffect, useState, useEffect } from "react";
+import React, { useId, useRef, useState, useMemo } from "react";
 
 interface RadioOption {
   value: string;
@@ -37,39 +37,48 @@ function RadioOptionItem({
   error,
 }: RadioOptionItemProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isCheckedState, setIsCheckedState] = useState(isChecked !== undefined ? isChecked : (defaultChecked || false));
+  const [isFocused, setIsFocused] = useState(false);
   
-  useEffect(() => {
-    if (isChecked !== undefined) {
-      setIsCheckedState(isChecked);
-    } else if (inputRef.current) {
-      setIsCheckedState(inputRef.current.checked);
+  // Определяем текущее состояние checked
+  const currentChecked = useMemo(() => {
+    if (isChecked !== undefined) return isChecked;
+    if (defaultChecked !== undefined) return defaultChecked;
+    return false;
+  }, [isChecked, defaultChecked]);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e);
     }
-  }, [isChecked]);
-  
-  const updateStyles = (element: HTMLInputElement) => {
-    const isCheckedNow = element.checked;
-    setIsCheckedState(isCheckedNow);
-    element.style.backgroundColor = isCheckedNow ? 'var(--checkbox-checked-bg)' : 'var(--checkbox-bg)';
-    element.style.borderColor = error ? 'var(--accent-red)' : (isCheckedNow ? 'var(--checkbox-checked-border)' : 'var(--checkbox-border)');
   };
-  
-  useLayoutEffect(() => {
-    if (inputRef.current) {
-      if (document.activeElement !== inputRef.current) {
-        updateStyles(inputRef.current);
+
+  const radioStyles = useMemo(() => {
+    const baseStyles = {
+      accentColor: 'var(--checkbox-checked-bg)',
+    };
+    
+    if (isFocused) {
+      if (currentChecked) {
+        return {
+          ...baseStyles,
+          backgroundColor: 'var(--checkbox-checked-bg)',
+          borderColor: error ? 'var(--accent-red)' : 'var(--checkbox-checked-border)',
+        };
       } else {
-        const isCheckedNow = inputRef.current.checked;
-        setIsCheckedState(isCheckedNow);
-        if (!isCheckedNow) {
-          inputRef.current.style.backgroundColor = 'var(--checkbox-bg)';
-          inputRef.current.style.borderColor = error ? 'var(--accent-red)' : 'var(--checkbox-border)';
-        }
+        return {
+          ...baseStyles,
+          backgroundColor: 'var(--input-focus-bg)',
+          borderColor: error ? 'var(--accent-red)' : 'var(--input-focus-border)',
+        };
       }
+    } else {
+      return {
+        ...baseStyles,
+        backgroundColor: currentChecked ? 'var(--checkbox-checked-bg)' : 'var(--checkbox-bg)',
+        borderColor: error ? 'var(--accent-red)' : (currentChecked ? 'var(--checkbox-checked-border)' : 'var(--checkbox-border)'),
+      };
     }
-  }, [isChecked, defaultChecked, error]);
-  
-  const initialIsChecked = isChecked !== undefined ? isChecked : (defaultChecked || false);
+  }, [currentChecked, isFocused, error]);
   
   return (
     <div className="flex items-center gap-3">
@@ -83,11 +92,7 @@ function RadioOptionItem({
           {...(isChecked !== undefined 
             ? { checked: isChecked } 
             : { defaultChecked })}
-          style={{
-            backgroundColor: initialIsChecked ? 'var(--checkbox-checked-bg)' : 'var(--checkbox-bg)',
-            borderColor: error ? 'var(--accent-red)' : (initialIsChecked ? 'var(--checkbox-checked-border)' : 'var(--checkbox-border)'),
-            accentColor: 'var(--checkbox-checked-bg)',
-          }}
+          style={radioStyles}
           className={`
             absolute inset-0
             w-6 h-6
@@ -99,27 +104,11 @@ function RadioOptionItem({
             transition-all duration-[600ms]
             disabled:opacity-50 disabled:cursor-not-allowed
           `.trim()}
-          onFocus={(e) => {
-            const isCheckedNow = e.target.checked;
-            if (isCheckedNow) {
-              e.target.style.backgroundColor = 'var(--checkbox-checked-bg)';
-              e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--checkbox-checked-border)';
-            } else {
-              e.target.style.backgroundColor = 'var(--input-focus-bg)';
-              e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--input-focus-border)';
-            }
-          }}
-          onBlur={(e) => {
-            updateStyles(e.target);
-          }}
-          onChange={(e) => {
-            updateStyles(e.target);
-            if (onChange) {
-              onChange(e);
-            }
-          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onChange={handleChange}
         />
-        {isCheckedState && (
+        {currentChecked && (
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full pointer-events-none"
             style={{ backgroundColor: 'var(--button-text-dark)' }}

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useId, useState, useEffect, useRef } from "react";
+import React, { useId, useState, useRef, useMemo } from "react";
 import { Icon } from "./Icon";
+import { useCharCount, useSelectAll } from "./hooks";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -27,6 +28,8 @@ export function Input({
   const inputId = id || generatedId;
   const inputRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  
   const showDateIcon = type === "date" || type === "datetime-local";
   const showTimeIcon = type === "time";
   const showUrlIcon = type === "url";
@@ -34,59 +37,29 @@ export function Input({
   const showIcon = showDateIcon || showTimeIcon || showUrlIcon || isPassword;
   const actualType = isPassword && showPassword ? "text" : type;
   
-  // Compute charCount directly from props
-  const initialCharCount = value !== undefined 
-    ? String(value).length 
-    : (defaultValue !== undefined ? String(defaultValue).length : 0);
-  const [charCount, setCharCount] = useState(initialCharCount);
+  // Используем useMemo для вычисления charCount вместо setState во время рендера
+  const charCount = useCharCount(value, defaultValue);
   
-  // Update charCount when controlled value changes (during render, acceptable pattern)
-  if (value !== undefined) {
-    const newCharCount = String(value).length;
-    if (charCount !== newCharCount) {
-      setCharCount(newCharCount);
-    }
-  }
-  
-  useEffect(() => {
-    const input = inputRef.current;
-    if (!input) return;
-    
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Поддержка Cmd+A (Mac) или Ctrl+A (Windows/Linux) для выделения всего текста
-      if ((e.metaKey || e.ctrlKey) && (e.key === 'a' || e.key === 'A')) {
-        e.preventDefault();
-        e.stopPropagation();
-        input.select();
-        input.setSelectionRange(0, input.value.length);
-        return false;
-      }
-    };
-    
-    input.addEventListener('keydown', handleKeyDown, true);
-    
-    return () => {
-      input.removeEventListener('keydown', handleKeyDown, true);
-    };
-  }, []);
+  // Hook для обработки Cmd/Ctrl+A
+  useSelectAll(inputRef);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Update charCount only for uncontrolled components
-    if (maxLength && value === undefined) {
-      setCharCount(e.target.value.length);
-    }
     if (onChange) {
       onChange(e);
     }
   };
   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Вызываем пользовательский обработчик, если он есть
     if (onKeyDown) {
       onKeyDown(e);
     }
   };
-  
+
+  const inputStyles = useMemo(() => ({
+    backgroundColor: isFocused ? 'var(--input-focus-bg)' : 'var(--input-bg)',
+    borderColor: error ? 'var(--accent-red)' : (isFocused ? 'var(--input-focus-border)' : 'var(--input-border)'),
+    color: isFocused ? 'var(--input-focus-text)' : 'var(--input-text)',
+  }), [isFocused, error]);
   
   return (
     <div className="flex flex-col gap-2">
@@ -116,11 +89,7 @@ export function Input({
           defaultValue={defaultValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          style={{
-            backgroundColor: 'var(--input-bg)',
-            borderColor: error ? 'var(--accent-red)' : 'var(--input-border)',
-            color: 'var(--input-text)',
-          }}
+          style={inputStyles}
           className={`
             w-full h-[44px]
             rounded-2xl border
@@ -132,16 +101,8 @@ export function Input({
             ${error ? "focus:border-accent-red" : "focus:border-[var(--input-focus-border)]"}
             ${className}
           `.trim()}
-          onFocus={(e) => {
-            e.target.style.backgroundColor = 'var(--input-focus-bg)';
-            e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--input-focus-border)';
-            e.target.style.color = 'var(--input-focus-text)';
-          }}
-          onBlur={(e) => {
-            e.target.style.backgroundColor = 'var(--input-bg)';
-            e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--input-border)';
-            e.target.style.color = 'var(--input-text)';
-          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
         {showIcon && (
           <div 

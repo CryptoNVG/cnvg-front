@@ -110,7 +110,7 @@ export const navigationData: NavSection[] = [
           icon: "MoneyWavy", 
           iconConfig: {
             desktop: { variant: "big", gradientAngle: 35, gradientColor1: "var(--accent-green)", gradientColor2: "var(--accent-blue)", className: "text-muted" },
-            mobile: { variant: "big", gradientAngle: 35, gradientColor1: "var(--accent-green)", gradientColor2: "var(--accent-blue)", className: "text-muted" },
+            mobile: { variant: "small", gradientAngle: 35, gradientColor1: "var(--accent-green)", gradientColor2: "var(--accent-blue)", className: "text-muted" },
           },
           title: "Exchange offline", 
           subtitle: "Cryptocurrency exchange service",
@@ -120,7 +120,7 @@ export const navigationData: NavSection[] = [
           icon: "GlobeSimple", 
           iconConfig: {
             desktop: { variant: "big", gradientAngle: 35, gradientColor1: "var(--accent-pink)", gradientColor2: "var(--accent-blue)", className: "text-muted" },
-            mobile: { variant: "big", gradientAngle: 35, gradientColor1: "var(--accent-red)", gradientColor2: "var(--accent-blue)", className: "text-muted" },
+            mobile: { variant: "small", gradientAngle: 35, gradientColor1: "var(--accent-red)", gradientColor2: "var(--accent-blue)", className: "text-muted" },
           },
           title: "Exchange online",
           subtitle: "Cryptocurrency exchange service",
@@ -130,7 +130,7 @@ export const navigationData: NavSection[] = [
           icon: "TrendUp", 
           iconConfig: {
             desktop: { variant: "big", gradientAngle: 35, gradientColor1: "var(--accent-red)", gradientColor2: "var(--accent-orange)", className: "text-muted" },
-            mobile: { variant: "big", gradientAngle: 35, gradientColor1: "var(--accent-red)", gradientColor2: "var(--accent-orange)", className: "text-muted" },
+            mobile: { variant: "small", gradientAngle: 35, gradientColor1: "var(--accent-red)", gradientColor2: "var(--accent-orange)", className: "text-muted" },
           },
           title: "CEX, DEX, OTC", 
           subtitle: "Digital asset exchange",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId, useRef, useLayoutEffect, useState } from "react";
+import React, { useId, useRef, useState, useMemo } from "react";
 import { Icon } from "./Icon";
 
 interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -22,36 +22,49 @@ export function Checkbox({
   const generatedId = useId();
   const checkboxId = id || generatedId;
   const inputRef = useRef<HTMLInputElement>(null);
-  const initialIsChecked = checked !== undefined ? checked : (defaultChecked || false);
-  const [isCheckedState, setIsCheckedState] = useState(initialIsChecked);
+  const [isFocused, setIsFocused] = useState(false);
   
-  const updateStyles = (element: HTMLInputElement) => {
-    const isChecked = element.checked;
-    setIsCheckedState(isChecked);
-    element.style.backgroundColor = isChecked ? 'var(--checkbox-checked-bg)' : 'var(--checkbox-bg)';
-    element.style.borderColor = error ? 'var(--accent-red)' : (isChecked ? 'var(--checkbox-checked-border)' : 'var(--checkbox-border)');
-  };
+  // Определяем текущее состояние checked
+  const isChecked = useMemo(() => {
+    if (checked !== undefined) return checked;
+    if (defaultChecked !== undefined) return defaultChecked;
+    return false;
+  }, [checked, defaultChecked]);
   
-  // Sync state when controlled prop changes (this is acceptable for controlled components)
-  if (checked !== undefined && isCheckedState !== checked) {
-    setIsCheckedState(checked);
-  }
-  
-  useLayoutEffect(() => {
-    if (inputRef.current) {
-      if (document.activeElement !== inputRef.current) {
-        updateStyles(inputRef.current);
-      } else {
-        // Если элемент в фокусе, все равно применяем правильные стили для неотмеченного состояния
-        const isChecked = inputRef.current.checked;
-        setIsCheckedState(isChecked);
-        if (!isChecked) {
-          inputRef.current.style.backgroundColor = 'var(--checkbox-bg)';
-          inputRef.current.style.borderColor = error ? 'var(--accent-red)' : 'var(--checkbox-border)';
-        }
-      }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e);
     }
-  }, [checked, defaultChecked, error]);
+  };
+
+  const checkboxStyles = useMemo(() => {
+    const baseStyles = {
+      accentColor: 'var(--checkbox-checked-bg)',
+      ...style,
+    };
+    
+    if (isFocused) {
+      if (isChecked) {
+        return {
+          ...baseStyles,
+          backgroundColor: 'var(--checkbox-checked-bg)',
+          borderColor: error ? 'var(--accent-red)' : 'var(--checkbox-checked-border)',
+        };
+      } else {
+        return {
+          ...baseStyles,
+          backgroundColor: 'var(--input-focus-bg)',
+          borderColor: error ? 'var(--accent-red)' : 'var(--input-focus-border)',
+        };
+      }
+    } else {
+      return {
+        ...baseStyles,
+        backgroundColor: isChecked ? 'var(--checkbox-checked-bg)' : 'var(--checkbox-bg)',
+        borderColor: error ? 'var(--accent-red)' : (isChecked ? 'var(--checkbox-checked-border)' : 'var(--checkbox-border)'),
+      };
+    }
+  }, [isChecked, isFocused, error, style]);
   
   return (
     <div className="flex flex-col gap-2">
@@ -63,12 +76,7 @@ export function Checkbox({
             id={checkboxId}
             checked={checked}
             defaultChecked={defaultChecked}
-            style={{
-              ...style,
-              backgroundColor: initialIsChecked ? 'var(--checkbox-checked-bg)' : 'var(--checkbox-bg)',
-              borderColor: error ? 'var(--accent-red)' : (initialIsChecked ? 'var(--checkbox-checked-border)' : 'var(--checkbox-border)'),
-              accentColor: 'var(--checkbox-checked-bg)',
-            }}
+            style={checkboxStyles}
             className={`
               absolute inset-0
               w-6 h-6
@@ -81,28 +89,12 @@ export function Checkbox({
               disabled:opacity-50 disabled:cursor-not-allowed
               ${className}
             `.trim()}
-            onFocus={(e) => {
-              const isChecked = e.target.checked;
-              if (isChecked) {
-                e.target.style.backgroundColor = 'var(--checkbox-checked-bg)';
-                e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--checkbox-checked-border)';
-              } else {
-                e.target.style.backgroundColor = 'var(--input-focus-bg)';
-                e.target.style.borderColor = error ? 'var(--accent-red)' : 'var(--input-focus-border)';
-              }
-            }}
-            onBlur={(e) => {
-              updateStyles(e.target);
-            }}
-            onChange={(e) => {
-              updateStyles(e.target);
-              if (onChange) {
-                onChange(e);
-              }
-            }}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
             {...props}
           />
-          {isCheckedState && (
+          {isChecked && (
             <Icon 
               name="Check" 
               variant="ui16" 

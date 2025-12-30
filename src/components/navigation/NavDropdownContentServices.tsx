@@ -18,16 +18,16 @@ export function NavDropdownContentServices({
   const isMobile = variant === "mobile";
   
   return (
-    <div className={`flex flex-col ${isMobile ? "gap-1 pl-4" : "gap-1"}`}>
+    <div className="flex flex-col gap-1">
       {group.items.map((item) => (
         <Link
           key={item.url}
           href={item.url}
           onClick={onLinkClick}
-          className={`flex items-center gap-3 rounded-2xl hover:bg-card-hover transition-colors group ${
+          className={`flex items-center gap-3 ${
             isMobile 
-              ? "px-4 py-4" 
-              : "px-3 py-2"
+              ? "px-6 py-2" 
+              : "rounded-2xl px-3 py-2 hover:bg-card-hover transition-colors group"
           }`}
         >
           {item.icon && (() => {
@@ -44,11 +44,11 @@ export function NavDropdownContentServices({
             );
           })()}
           <div className="flex flex-col min-w-0">
-            <span className={`${isMobile ? "text-base" : "text-sm text-base"} group-hover:text-heading transition-colors`}>
+            <span className={`${isMobile ? "text-base" : "text-sm text-base group-hover:text-heading transition-colors"}`}>
               {item.title}
             </span>
-            {item.subtitle && (
-              <span className={`${isMobile ? "text-sm" : "text-xs"} text-muted mt-0.5`}>
+            {item.subtitle && !isMobile && (
+              <span className="text-xs text-muted mt-0.5">
                 {item.subtitle}
               </span>
             )}
