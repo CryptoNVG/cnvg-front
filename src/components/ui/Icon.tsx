@@ -11,7 +11,7 @@
  */
 
 import * as PhosphorIcons from "@phosphor-icons/react";
-import { createElement, useMemo, useEffect } from "react";
+import { createElement, useMemo } from "react";
 
 type IconVariant = "big" | "small" | "ui16" | "ui12";
 
@@ -124,73 +124,6 @@ function angleToCoords(angle: number): { x1: string; y1: string; x2: string; y2:
   };
 }
 
-// Global SVG for gradient definitions
-function ensureGlobalGradientSVG(): SVGDefsElement | null {
-  if (typeof document === "undefined") {
-    return null;
-  }
-  
-  const existingSVG = document.getElementById("icon-gradients-svg") as SVGSVGElement | null;
-  if (existingSVG) {
-    return existingSVG.querySelector("defs") || existingSVG.appendChild(document.createElementNS("http://www.w3.org/2000/svg", "defs"));
-  }
-  
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.id = "icon-gradients-svg";
-  svg.style.position = "absolute";
-  svg.style.width = "0";
-  svg.style.height = "0";
-  svg.style.visibility = "hidden";
-  
-  const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-  svg.appendChild(defs);
-  document.body.appendChild(svg);
-  
-  return defs;
-}
-
-// Add gradient to global SVG if it doesn't exist
-function ensureGradient(
-  gradientId: string,
-  angle: number,
-  color1: string,
-  color2: string
-): void {
-  if (typeof document === "undefined") {
-    return;
-  }
-  
-  const defs = ensureGlobalGradientSVG();
-  if (!defs) {
-    return;
-  }
-  
-  const existingGradient = document.getElementById(gradientId);
-  if (existingGradient) {
-    return; // Gradient already exists
-  }
-  
-  const coords = angleToCoords(angle);
-  const gradient = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
-  gradient.id = gradientId;
-  gradient.setAttribute("x1", coords.x1);
-  gradient.setAttribute("y1", coords.y1);
-  gradient.setAttribute("x2", coords.x2);
-  gradient.setAttribute("y2", coords.y2);
-  
-  const stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-  stop1.setAttribute("offset", "0%");
-  stop1.setAttribute("stop-color", color1);
-  
-  const stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-  stop2.setAttribute("offset", "100%");
-  stop2.setAttribute("stop-color", color2);
-  
-  gradient.appendChild(stop1);
-  gradient.appendChild(stop2);
-  defs.appendChild(gradient);
-}
-
 export function Icon({
   name,
   variant = "ui16",
@@ -223,12 +156,9 @@ export function Icon({
     return null;
   }
 
-  // For gradient variants, use global SVG gradient
+  // For gradient variants, use inline SVG gradient
   if (config.gradient) {
-    // Ensure gradient is defined in global SVG
-    useEffect(() => {
-      ensureGradient(gradientId, finalGradientAngle, finalGradientColor1, finalGradientColor2);
-    }, [gradientId, finalGradientAngle, finalGradientColor1, finalGradientColor2]);
+    const coords = angleToCoords(finalGradientAngle);
     
     return (
       <div
@@ -238,6 +168,16 @@ export function Icon({
           height: config.size,
         }}
       >
+        {/* Hidden SVG with gradient definition */}
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <linearGradient id={gradientId} x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2}>
+              <stop offset="0%" stopColor={finalGradientColor1} />
+              <stop offset="100%" stopColor={finalGradientColor2} />
+            </linearGradient>
+          </defs>
+        </svg>
+        
         {/* Icon with gradient fill */}
         <div style={{ color: `url(#${gradientId})` }}>
           {createElement(IconComponent, { size: config.size, weight: config.weight, color: `url(#${gradientId})` })}

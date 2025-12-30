@@ -11,6 +11,33 @@ interface SectionBreadcrumbsProps {
   className?: string;
 }
 
+/**
+ * Breadcrumbs Formation Rules
+ * 
+ * Breadcrumbs should follow these guidelines:
+ * 
+ * 1. **Path Structure**: Include only the navigation path TO the current page, NOT the current page itself.
+ *    - The current page name is already displayed in the page title (SectionHero), so it shouldn't be duplicated.
+ * 
+ * 2. **Root Page**: For root-level pages (e.g., `/theme`), include only "Home":
+ *    - ✅ Correct: `[{ label: "Home", href: "/" }]`
+ *    - ❌ Wrong: `[{ label: "Home", href: "/" }, { label: "Theme" }]`
+ * 
+ * 3. **Sub-pages**: For sub-pages, include the path hierarchy up to (but not including) the current page:
+ *    - ✅ Correct: `[{ label: "Home", href: "/" }, { label: "Theme", href: "/theme" }]` for `/theme/typography`
+ *    - ❌ Wrong: `[{ label: "Home", href: "/" }, { label: "Theme", href: "/theme" }, { label: "Typography" }]`
+ * 
+ * 4. **Links**: All breadcrumb items except the last one should have `href` property.
+ *    - The last item in the array should NOT have `href` (it represents the current page path, not the page itself).
+ * 
+ * 5. **Examples**:
+ *    - `/theme` → `[{ label: "Home", href: "/" }]`
+ *    - `/theme/typography` → `[{ label: "Home", href: "/" }, { label: "Theme", href: "/theme" }]`
+ *    - `/support/faq/article` → `[{ label: "Home", href: "/" }, { label: "Support", href: "/support" }, { label: "FAQ", href: "/support/faq" }]`
+ * 
+ * 6. **Label Length**: Labels longer than 20 characters will be automatically truncated with "..."
+ */
+
 // Mock data for different page types
 export const MOCK_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
   exchangeProfile: [
